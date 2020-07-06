@@ -1,0 +1,61 @@
+<div class="container">
+
+
+    <div class="row">
+        <div class="col-md-7 col-sm-12 col-xs-12">
+
+            <div *ngIf="sorted && !isFetching">
+
+                <div class="card row" *ngFor="let i of sorted ;let c= index ">
+                    <a [routerLink]="[c]">
+
+                        <div class="col-md-8 col-xs-7 main-content">
+
+                            <h3 class="title">{{i.title}}</h3>
+                            <p>{{i.desc}} </p>
+
+                            <div class="author-date col-md-6 col-xs-12">
+                                <p class="author-name">By {{i.name}}</p>
+                                <p class="date">On {{i.created_date.toDate() | date }}</p>
+                            </div>
+
+                            <!-- <div class="col-md-6 col-xs-6 read-more-btn">
+                            <button type="button" [routerLink]="[c]" class="btn btn-primary">Read full story</button>
+                        </div> -->
+                        </div>
+                    </a>
+                    <div class="col-md-4 col-xs-5 img-col">
+                        <img src="{{i.imgurl}}" alt="Avatar" style="width:100%" class="img-responsive">
+                    </div>
+                </div>
+            </div>
+
+            <div *ngIf="isFetching && !error" class="loading-text">
+                <app-loading-spinner></app-loading-spinner>
+            </div>
+
+            <div *ngIf="error && !isFetching" class="error-text">
+                <h4>{{error}}</h4>
+
+            </div>
+        </div>
+
+
+        <!-- <ng-template #loading>
+        <div *ngIf="isFetching && !error" class="loading-text">
+            <div class="loader"></div>
+            <p> loading Contet...</p>
+        </div>
+
+
+
+        <div *ngIf="error && !isFetching" class="error-text">
+            <h4>{{error}}</h4>
+
+        </div>
+    </ng-template>
+    <div class="col-sm-4 col-xs-12">
+    </div> -->
+    </div>
+</div>
+<router-outlet></router-outlet>

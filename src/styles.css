@@ -1,1 +1,108 @@
 /* You can add global styles to this file, and also import other style files */
+
+@import "~bootstrap/dist/css/bootstrap.css";
+@font-face {
+    font-family: medium-content-sans-serif-font;
+    src: url(assets/fonts/marat-sans-400-normal.woff) format("woff");
+}
+
+.loader {
+    border: 16px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 16px solid blue;
+    border-bottom: 16px solid blue;
+    width: 90px;
+    height: 90px;
+    -webkit-animation: spin 2s linear infinite;
+    animation: spin 2s linear infinite;
+    margin-top: 350px;
+    margin: 20% auto 0;
+}
+
+@-webkit-keyframes spin {
+    0% {
+        -webkit-transform: rotate(0deg);
+    }
+    100% {
+        -webkit-transform: rotate(360deg);
+    }
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.loading-text h3 {
+    text-align: center;
+    margin-top: 50px;
+}
+
+.loading-text p {
+    text-align: center;
+    margin-top: 50px;
+    color: black;
+    text-align: center;
+    font-size: 22px;
+}
+
+.error-text p {
+    color: black;
+    text-align: center;
+    font-size: 22px;
+}
+
+.navbar-default .navbar-collapse .navbar-nav>li>a {
+    color: #000;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.main-content h2 {
+    margin-top: 10px;
+}
+
+.main-content h2,
+.main-content>p {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
+@media screen and (max-width:767px) {
+    .main-content h2 {
+        font-size: 18px;
+        font-weight: 700;
+    }
+    .navbar-nav,
+    .collapse.navbar-collapse ul>li {
+        display: inline-block;
+    }
+    .collapse.navbar-collapse {
+        display: block;
+    }
+    ul.nav.navbar-nav.navbar-right {
+        margin-left: 25px;
+    }
+    .navbar-nav {
+        margin-top: 0;
+        margin-bottom: 0;
+    }
+    .navbar-default .navbar-collapse .navbar-nav>li>a {
+        padding-top: 12px;
+        padding-bottom: 12px;
+    }
+}
+
+.help-block {
+    color: red
+}
+
+.form-control.ng-touched.ng-invalid {
+    border: 1px solid red
+}

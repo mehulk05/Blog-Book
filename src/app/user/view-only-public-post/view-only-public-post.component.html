@@ -1,0 +1,57 @@
+<div class="row">
+    <div class="col-md-3 col-sm-12">
+        <div class="list-group">
+            <a class="list-group-item" routerLinkActive="active" [routerLink]="['/myprofile',unameParam ]" [routerLinkActiveOptions]="{ exact: true }">Profile</a>
+
+            <a class="list-group-item" routerLinkActive="active" [routerLink]="['/myprofile',unameParam ,'publicposts']" [routerLinkActiveOptions]="{ exact: true }">Public Posts
+                <span class="count-post"> ({{pbcount}})</span></a>
+
+            <a class="list-group-item disabled" routerLinkActive="active" [routerLink]="['']" [routerLinkActiveOptions]="{ exact: true }">Private Posts
+                <span class="count-post"> ({{prcount}})</span></a>
+            <a class="list-group-item disabled" routerLinkActive="active" [routerLink]="['']" [routerLinkActiveOptions]="{ exact: true }">All Posts
+                <span class="count-post"> ({{allcount}})</span></a>
+        </div>
+    </div>
+
+    <div class="col-md-9 col-sm-12">
+        <div *ngIf="PublicPosts">
+            <div *ngFor="let i of  PublicPosts;let c = index">
+
+
+                <div class="col-md-9 col-xs-9 main-content">
+
+                    <h2 class="title">
+                        {{ i.title }}
+                    </h2>
+
+                    <p>{{ i.desc }}</p>
+
+
+
+                    <div class="author-date col-md-6 col-xs-6">
+                        <p class="author-name">
+                            By {{ i.name }}
+                        </p>
+
+                        <p class="date">
+                            On {{ i.created_date | date }}
+                        </p>
+                    </div>
+
+                    <div class="col-md-6 col-xs-6 read-more-btn">
+                        <button type="button " [routerLink]="[c]" class="btn btn-primary">
+                            Read full story
+                        </button>
+                    </div>
+                </div>
+
+                <div class="col-md-3 col-xs-3 img-col">
+                    <img src="{{ i.imgurl }} " alt="Avatar " style="width: 100%;" class="img-responsive" />
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

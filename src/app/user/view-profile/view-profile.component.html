@@ -1,0 +1,76 @@
+<div class="row" *ngIf="!isloading;else loading">
+    <div class="col-md-3 col-sm-12" *ngIf="isAuthenticated && ismyself">
+        <div class="list-group">
+            <a class="list-group-item" routerLinkActive="active" [routerLink]="['/myprofile',unameParam]">Profile</a>
+            <a class="list-group-item" [routerLink]="['/myprofile',username,'editProfile']">Edit Profile</a>
+
+            <a class="list-group-item" [routerLink]="['/myposts', 'public']">Public Posts
+                <span class="count-post"> ({{pbcount}})</span></a>
+
+            <a class="list-group-item" [routerLink]="['/myposts', 'private']">Private Posts
+                <span class="count-post"> ({{prcount}})</span></a>
+            <a class="list-group-item" [routerLink]="['/myposts']">All Posts
+                <span class="count-post"> ({{allcount}})</span></a>
+        </div>
+    </div>
+
+    <div class="col-md-3 col-sm-12" *ngIf="!isAuthenticated || !ismyself">
+        <div class="list-group">
+            <a class="list-group-item" routerLinkActive="active" [routerLink]="['/myprofile',unameParam]">Profile</a>
+
+            <a class="list-group-item" routerLinkActive="active" [routerLink]="['publicposts']">Public Posts
+                <span class="count-post"> ({{pbcount}})</span>
+            </a>
+
+            <a class="list-group-item disabled" [routerLink]="['']">Private Posts
+                <span class="count-post"> ({{prcount}})</span></a>
+
+            <a class="list-group-item disabled" [routerLink]="['']">All Posts
+                <span class="count-post"> ({{allcount}})</span></a>
+        </div>
+    </div>
+
+
+    <div class="col-md-7 col-sm-12 center-block">
+        <div class="row" *ngIf="ProfileData">
+            <div class="col-md-8 col-xs-8">
+                <h2>
+                    {{ProfileData.name}}
+                </h2>
+
+                <h5>
+                    {{ProfileData.uname}}
+                </h5>
+
+                <p>
+                    {{ProfileData.email}}
+                </p>
+
+                <p>
+                    {{ProfileData.desc}}
+                </p>
+            </div>
+
+            <div class="col-md-4 col-xs-4">
+                <img [src]="ProfileData.imgurl" class="img-circle" width="150" height="150">
+
+            </div>
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+<div class="col-md-9 col-sm-12 ">
+    <ng-template #loading>
+
+        <div *ngIf="isloading" class="loading-text">
+            <div class="loader"></div>
+            <p>Loading content here...</p>
+        </div>
+
+    </ng-template>
+</div>

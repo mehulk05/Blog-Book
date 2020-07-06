@@ -1,0 +1,15 @@
+@media screen and (max-width:767px) {
+    .col-md-4.col-xs-4 {
+        margin-top: 25px;
+    }
+    .img-circle {
+        width: 75px;
+        height: 75px;
+    }
+}
+
+@media screen and (min-width:992px) {
+    .col-md-8.col-xs-8 {
+        padding-left: 50px;
+    }
+}

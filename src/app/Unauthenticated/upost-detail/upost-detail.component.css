@@ -1,0 +1,123 @@
+.container-postdetil {
+    float: none;
+    margin: 0 auto;
+}
+
+.post-exist+.container-postdetil {
+    float: left;
+}
+
+.title {
+    line-height: 48px;
+    font-size: 40px;
+    font-family: medium-content-title-font, Georgia, Cambria, "Times New Roman", Times, serif;
+    color: rgba(0, 0, 0, 0.84);
+    font-weight: 400;
+}
+
+.container-main {
+    margin: 0 auto;
+    max-width: 680px;
+    width: 100%;
+}
+
+.avtar>img {
+    width: 75px;
+    height: 75px;
+    display: inline-block;
+    float: left;
+}
+
+.date {
+    float: right;
+    margin-top: 10px;
+}
+
+.avtar-text {
+    margin-top: 10px;
+    float: left;
+    padding-left: 25px;
+}
+
+.author-name {
+    margin-top: 10px;
+    font-size: 20px;
+    margin-bottom: 0;
+}
+
+.avtar>p {
+    margin-left: 12px;
+    color: rgba(0, 0, 0, 0.84);
+}
+
+figcaption {
+    text-align: center;
+    padding: 15px;
+}
+
+.desc {
+    margin-top: 2em;
+    font-size: 21px;
+    font-family: medium-content-serif-font, Georgia, Cambria, "Times New Roman", Times, serif;
+}
+
+.heart {
+    position: absolute;
+    left: -35px;
+    top: -60px;
+    width: 100px;
+    height: 68px;
+    background: url("https://cssanimation.rocks/images/posts/steps/heart.png") no-repeat;
+    background-position: 0 0;
+    cursor: pointer;
+    -webkit-transition: background-position 1s steps(28);
+    transition: background-position 1s steps(28);
+    -webkit-transition-duration: 0s;
+    transition-duration: 0s;
+}
+
+.heart.is-active {
+    -webkit-transition-duration: 1s;
+    transition-duration: 1s;
+    background-position: -2800px 0;
+}
+
+.stage {
+    position: relative;
+    /*  position: absolute;
+    top: 50%;
+    left: -20%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%); */
+}
+
+.heart span {
+    padding-left: 80px;
+    position: absolute;
+    /* padding: 46px; */
+    padding-top: 41px;
+    white-space: nowrap;
+}
+
+.avtar+div {
+    margin-top: 120px
+}
+
+.post-img {
+    margin-top: 95px;
+}
+
+@media screen and (max-width:767px) {
+    .date {
+        margin: 0;
+        float: left;
+        margin-left: 15px;
+    }
+    .avtar-text {
+        margin-top: 0;
+        padding-left: 15px;
+    }
+    .post-img {
+        margin-top: 115px;
+    }
+}

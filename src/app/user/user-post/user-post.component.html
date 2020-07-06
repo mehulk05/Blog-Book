@@ -1,0 +1,145 @@
+<div class="row">
+    <div class="col-md-3 col-sm-12">
+        <div class="list-group">
+            <a class="list-group-item" [ngClass]="{ active: isAll == true }" [routerLink]="['/myposts', type[0]]" (click)="getAllPosts()">All Posts ({{count_all}})</a
+      >
+
+      <a
+        class="list-group-item"
+        [ngClass]="{ active: isPublic == true }"
+        [routerLink]="['/myposts', type[1]]"
+        (click)="getPublicPosts()"
+        >Public Posts</a
+      >
+
+      <a
+        class="list-group-item"
+        [ngClass]="{ active: isPrivate == true }"
+        [routerLink]="['/myposts', type[2]]"
+        (click)="getPriavtePosts()"
+        >Private Posts</a
+      >
+    </div>
+  </div>
+
+  <div  class="col-md-7 col-sm-12 col-xs-12 post-cards">
+    <div *ngIf="isAll && allpost;else loading">
+
+
+    <div class="card row" 
+    *ngFor="let i of allpost  ; let c = index">
+    <a  [routerLink]="[c]" >
+      <div class="col-md-8 col-xs-8 main-content">  
+        <h2 class="title">
+        {{ i.title }}
+      </h2>
+
+        <p>{{ i.desc }}</p>
+            <div class="author-date col-md-6 col-xs-12">
+                <p class="author-name">
+                    By : {{ i.name }}
+                </p>
+                <p class="date">
+                    On : {{ i.created_date | date }}
+                </p>
+            </div>
+
+
+        </div>
+
+        <div class="col-md-4 col-xs-4 img-col">
+            <img src="{{ i.imgurl }} " alt="Avatar " style="width: 100%;" class="img-responsive" />
+        </div>
+        </a>
+        </div>
+
+
+
+    </div>
+
+</div>
+
+
+
+
+<div *ngIf="isPublic  && public_post;else loading2" class="col-md-7 col-sm-12 col-xs-12">
+    <div class="card row" *ngFor="let i of public_post; let c = index">
+        <a [routerLink]="[c]">
+            <div class="col-md-8 col-xs-8 main-content">
+                <h2 class="title">{{ i.title }}</h2>
+                <p>{{ i.desc }}</p>
+
+
+                <div class="author-date col-md-6 col-xs-12">
+                    <p class="author-name">By {{ i.name }}</p>
+
+                    <p class="date">On {{ i.created_date | date }}</p>
+                </div>
+
+            </div>
+
+            <div class="col-md-4 col-xs-4 img-col">
+                <img src="{{ i.imgurl }} " alt="Avatar " style="width: 100%;" class="img-responsive" />
+            </div>
+        </a>
+    </div>
+</div>
+
+<div *ngIf="isPrivate  && private_post.length>0;else loading3" class="col-md-7 col-sm-12 col-xs-12">
+    <div class="card row" *ngFor="let i of private_post; let c = index">
+        <a [routerLink]="[c]">
+            <div class="col-md-8 col-xs-8 main-content">
+                <h2 class="title">{{ i.title }}</h2>
+                <p>{{ i.desc }}</p>
+
+
+                <div class="author-date col-md-6 col-xs-12">
+                    <p class="author-name">By {{ i.name }}</p>
+
+                    <p class="date">On {{ i.created_date | date }}</p>
+                </div>
+
+            </div>
+
+            <div class="col-md-4 col-xs-4 img-col">
+                <img src="{{ i.imgurl }} " alt="Avatar " style="width: 100%;" class="img-responsive" />
+            </div>
+        </a>
+    </div>
+
+</div>
+
+
+<ng-template #loading>
+
+    <div *ngIf="isAll && isLoading$ | async " class="error-text">
+        <div class="loader"></div>
+        <p>Loading content here...</p>
+    </div>
+
+
+</ng-template>
+
+<ng-template #loading2>
+
+    <div *ngIf="isPublic && isLoading$ | async " class="error-text">
+        <div class="loader"></div>
+        <p>Loading content here...</p>
+    </div>
+
+
+
+</ng-template>
+
+<ng-template #loading3>
+
+    <div *ngIf="isPrivate && isLoading$ | async " class="error-text">
+        <div class="loader"></div>
+        <p>Loading content here...</p>
+    </div>
+
+
+</ng-template>
+
+<div class="col-sm-4 col-xs-12"></div>
+</div>

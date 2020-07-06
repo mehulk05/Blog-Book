@@ -1,0 +1,58 @@
+.card.row {
+    border: 1px solid #999;
+    border-radius: 6px;
+    margin: 0;
+    min-height: 180px;
+    margin-bottom: 25px;
+    position: relative;
+}
+
+.main-content div {
+    padding: 0;
+}
+
+.main-content {
+    position: unset;
+}
+
+
+/* .author-date {
+    margin-top: 10px
+} */
+
+.author-date>p {
+    color: #474d55;
+    font-weight: 500;
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 0;
+}
+
+a {
+    color: #000;
+}
+
+.img-col {
+    padding: 0;
+}
+
+.img-col img {
+    min-height: 180px;
+}
+
+h3.title {
+    font-weight: bold;
+    margin-top: 10px;
+    font-family: sans-serif;
+}
+
+.author-date {
+    position: absolute;
+    bottom: 0;
+}
+
+@media screen and (max-width:767px) {
+    .img-col img,
+    .card.row {
+        min-height: 145px;
+    }
+}

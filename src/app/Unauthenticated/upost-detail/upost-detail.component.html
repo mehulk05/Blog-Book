@@ -1,0 +1,233 @@
+<div class="row">
+    <div class="col-md-3 col-sm-12 post-exist" *ngIf="isAuthenticated && xyz[1]!=='home' ">
+        <div class="list-group">
+            <a class="list-group-item" routerLink="/create-post">Add new Post</a
+          >
+    
+          <a
+            class="list-group-item"
+            [routerLink]="['/myposts',postype,id,'edit']"
+            >Edit Post</a
+          >
+    
+          <a
+            class="list-group-item"
+            [ngClass]="{ active: isPrivate == true }"
+            [routerLink]="['/myposts']"
+    
+            >Private Posts</a
+          >
+        </div>
+      </div>
+ <div class="container container-postdetil col-md-9 col-sm-12">
+    
+    <div class="row" *ngIf="xyz[1]=='home' &&
+      isUnauth &&
+      unauthpost;else loading
+    ">
+        <div class="col-xs-12">
+            <h2 class="title">
+                {{ unauthpost.title }}
+            </h2>
+            '
+            <div class="avtar">
+              <!--   <img *ngIf="!isImgLoaded" [src]="'https://i.pinimg.com/originals/10/b2/f6/10b2f6d95195994fca386842dae53bb2.png' " 
+                class="img-responsive img-circle" /> -->
+                
+                <img 
+               
+                [src]="ProfileImgUrl || 'https://i.pinimg.com/originals/10/b2/f6/10b2f6d95195994fca386842dae53bb2.png'"
+                class="img-responsive img-circle" />
+           
+                <div class="avtar-text">
+                    <a class="author-name" 
+                    (click)="navigateToProfile(unauthpost.name)">
+                    
+                        {{ unauthpost.name }}
+                    </a>
+
+            <p class="category">
+                <b>Category: </b> {{ unauthpost.category }}
+            </p>
+        </div>
+        <p class="date">
+            <b>Written on : </b> {{ postDate | date:"medium" }}
+            <!-- <b>Written on : </b> {{ unauthpost.created_date.toDate() | date: "medium" }} -->
+
+        </p>
+    </div>
+    <div *ngIf="unauthpost.imgurl;else loading">
+        <img *ngIf="!isImgLoaded" [src]="'https://i.pinimg.com/originals/10/b2/f6/10b2f6d95195994fca386842dae53bb2.png' " class="img-responsive" />
+        <img [hidden]=" !isImgLoaded" [src]="unauthpost.imgurl " (load)="isImgLoaded=true " class="img-responsive ">
+        <figcaption>{{ unauthpost.title }}</figcaption>
+    </div>
+    <!-- <div *ngIf="!unauthpost.imgurl ">
+        <img src="https://i.pinimg.com/originals/10/b2/f6/10b2f6d95195994fca386842dae53bb2.png " loading="lazy " class="img-responsive " />
+        <figcaption>{{ unauthpost.title }}</figcaption>
+    </div> -->
+    <div class="stage " (click)="Like() ">
+        <div class="heart " [ngClass]="likeStatus? 'is-active': '' ">
+            <span>Heart {{count}}</span></div>
+    </div>
+    <p class="desc ">{{ unauthpost.desc }}</p>
+    <p>{{count}}</p>
+</div>
+</div>
+
+<div class="row " *ngIf="postype=='public' && public_post as i;else loading2 ">
+    <div class="col-md-9 col-xs-12 ">
+        <h2 class="title ">{{ i[id]?.title }}</h2>
+        '
+        <div class="avtar ">
+            <img src="https://image.shutterstock.com/image-vector/man-character-face-avatar-glasses-260nw-562077406.jpg " class="img-responsive img-circle " />
+
+            <div class="avtar-text ">
+                <p class="author-name ">{{ i[id]?.name }}</p>
+                <p class="category "><b>Category: </b>{{ i[id]?.category }}</p>
+            </div>
+            <p class="date ">
+                <b>Written on : </b>{{ i[id]?.created_date | date: "medium " }}
+            </p>
+        </div>
+
+        <img src="{{ i[id]?.imgurl }} " class="img-responsive " />
+        <figcaption>{{ i[id]?.title }}</figcaption>
+        <p class="desc ">{{ i[id]?.desc }}</p>
+
+        <div class="stage " (click)="OnLike(public_post[id],i[id]?.likecount) ">
+            <div class="heart ">
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="row " *ngIf="postype=='private' && acrud.pr | async as i;else loading3 ">
+    <div class="col-xs-12 ">
+        <h2 class="title ">{{ i[id]?.title }}</h2>
+        '
+        <div class="avtar ">
+            <img src="https://image.shutterstock.com/image-vector/man-character-face-avatar-glasses-260nw-562077406.jpg " class="img-responsive img-circle " />
+
+            <div class="avtar-text ">
+                <p class="author-name ">{{ i[id]?.name }}</p>
+                <p class="category "><b>Category: </b>{{ i[id]?.category }}</p>
+            </div>
+            <p class="date ">
+                <b>Written on : </b>{{ i[id]?.created_date | date: "medium " }}
+            </p>
+        </div>
+
+        <img src="{{ i[id]?.imgurl }} " class="img-responsive " />
+        <figcaption>{{ i[id]?.title }}</figcaption>
+        <p class="desc ">{{ i[id]?.desc }}</p>
+    </div>
+</div>
+
+<div class="row " *ngIf="postype=='allpost' && !isFetching && allPost as i;else loading5 ">
+    <div class="col-xs-12 ">
+        <h2 class="title ">{{ i[id]?.title }}</h2>
+        '
+        <div class="avtar ">
+            <img src="https://image.shutterstock.com/image-vector/man-character-face-avatar-glasses-260nw-562077406.jpg " class="img-responsive img-circle " />
+
+            <div class="avtar-text ">
+                <p class="author-name ">{{ i[id]?.name }}</p>
+                <p class="category "><b>Category: </b>{{ i[id]?.category }}</p>
+            </div>
+            <p class="date ">
+                <b>Written on : </b>{{ i[id]?.created_date| date: "medium" }}
+            </p>
+        </div>
+
+        <img src="{{ i[id]?.imgurl }} " class="img-responsive post-img" />
+        <figcaption>{{ i[id]?.title }}</figcaption>
+        <p class="desc ">{{ i[id]?.desc }}</p>
+
+
+    </div>
+</div>
+
+<hr>
+
+<form class="create-form " [formGroup]="CommentForm" novalidate (ngSubmit)="onSubmit(CommentForm.value) ">
+    <div class="form-group ">
+        <label for="comment ">Leave Your Comment Here:</label>
+        <textarea class="form-control " rows="5 " id="comment " formControlName="comment"></textarea>
+
+    </div>
+    <div class="row submit-button-container ">
+        <div class="col-md-4 ">
+            <button class="btn btn-primary submit-button " color="primary " type="submit " [disabled]="!CommentForm.valid ">Post your comment</button>
+        </div>
+    </div>
+</form>
+
+<hr>
+
+<div class="col-md-12 " *ngIf="Comment_Data ">
+    <div *ngFor="let x of Comment_Data ">
+        <h4>{{x.uname}}</h4>
+        <p>{{x.commentOn| date:"medium"}}</p>
+        <p>{{x.comment}}</p>
+        <hr>
+    </div>
+
+</div>
+</div>
+
+
+<ng-template #loading>
+    <div *ngIf="isFetching && !unauthpost && postype !=='public' && postype !=='private' && postype !=='allpost' " class="loading-text ">
+        <div class="loader "></div>
+        <p> please wait Loading ...</p>
+    </div>
+
+    <div *ngIf="error || errorkey " class="loading-text ">
+
+        <h3>{{errorkey}}</h3>
+        <p> {{error}}</p>
+    </div>
+</ng-template>
+
+<ng-template #loading2>
+    <div *ngIf="isFetching && postype==='public' " class="loading-text ">
+        <div class="loader "></div>
+        <p> please wait Loading ...</p>
+    </div>
+
+    <div *ngIf="error || errorkey " class="loading-text ">
+
+        <h3>{{errorkey}}</h3>
+        <p> {{error}}</p>
+    </div>
+</ng-template>
+
+
+<ng-template #loading3>
+    <div *ngIf="isFetching && postype==='private' " class="loading-text ">
+        <div class="loader "></div>
+        <p> please wait Loading ...</p>
+    </div>
+
+
+    <div *ngIf="error || errorkey " class="loading-text ">
+
+        <h3>{{errorkey}}</h3>
+        <p> {{error}}</p>
+    </div>
+</ng-template>
+
+<ng-template #loading5>
+    <div *ngIf="isFetching && postype==='allpost' " class="loading-text ">
+        <div class="loader "></div>
+        <p> please wait Loading ...</p>
+    </div>
+
+
+    <div *ngIf="error || errorkey " class="loading-text ">
+
+        <h3>{{errorkey}}</h3>
+        <p> {{error}}</p>
+    </div>
+</ng-template>

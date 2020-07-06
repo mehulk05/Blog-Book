@@ -1,0 +1,49 @@
+.card.row {
+    border: 1px solid #999;
+    border-radius: 6px;
+    margin: 0;
+    min-height: 180px;
+}
+
+.main-content div {
+    padding: 0;
+}
+
+.author-date {
+    margin-top: 10px
+}
+
+.author-date>p {
+    color: gray;
+    font-family: medium-content-sans-serif-font, "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Geneva, Arial, sans-serif!important;
+    margin: 0
+}
+
+a {
+    color: #000;
+}
+
+.img-col {
+    padding: 0;
+}
+
+.img-col img {
+    min-height: 180px;
+}
+
+h3.title {
+    font-weight: bold;
+    margin-top: 10px;
+    font-family: medium-content-sans-serif-font, "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Geneva, Arial, sans-serif!important;
+}
+
+@media screen and (max-width:767px) {
+    .img-col img,
+    .card.row {
+        min-height: 135px;
+    }
+}
+
+.loading-text {
+    text-align: center
+}
