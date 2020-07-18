@@ -18,6 +18,7 @@ export class UCreatePostComponent implements OnInit {
   private userSub: Subscription;
 
   isloading: boolean
+  isprofileset
   isimgloading: boolean
   exampleForm: FormGroup;
   values = ['Happy', 'Sad', 'Success', 'Failure', 'Hurt', 'Study', 'Educational', 'Portfolio', 'Other'];
@@ -94,8 +95,23 @@ export class UCreatePostComponent implements OnInit {
 
     this.userSub = this.authService.user.subscribe(user => {
       this.isAuthenticated = !!user;
+  
+      let uid=user.uid
+      this.acrud.getProfileFromUid(uid).subscribe(data=>{
+        let profile=this.acrud.seprate(data)
+        this.isprofileset=profile[0].isProfileSet
+      
+        if(!this.isprofileset){
+          this.router.navigate(['myprofile'])
+          this.acrud.showWarningForProfileSet()
+        }
+      })
 
     })
+
+
+/* 
+    this.acrud.getProfileFromUid() */
 
     this.createForm();
     if (this.isAuthenticated) {

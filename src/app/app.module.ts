@@ -37,6 +37,8 @@ import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { ResetpasswordComponent } from './Authentication/resetpassword/resetpassword.component';
 import { ToastrModule } from 'ngx-toastr';
 import { VerifyMailComponent } from './Authentication/verify-mail/verify-mail.component';
+import { NoSanitizePipe } from './Authentication/shared/no-sanitize.pipe';
+
 
 
 
@@ -55,6 +57,7 @@ import { VerifyMailComponent } from './Authentication/verify-mail/verify-mail.co
     LoadingSpinnerComponent,
     ResetpasswordComponent,
     VerifyMailComponent,
+    NoSanitizePipe,
 
     
     

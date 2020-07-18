@@ -28,7 +28,7 @@
                             <div class="title main-content">
                                 <h3 class="title">{{ i.title}}</h3>
                                 <!--   <p> {{i.desc}}</p> -->
-                                <p [innerHTML]="i.desc "></p>
+                                <p [innerHTML]="i.desc | noSanitize"></p>
 
                                 <div class="author-date">
                                     <p class="author-name">By {{i.name}}</p>
@@ -70,24 +70,28 @@
                     <div class="card row" *ngFor="let i of result;let c= index ">
                         <a [routerLink]="[c]">
 
-                            <div class="col-md-8 col-xs-7 main-content">
+                            <div class="col-md-4 col-xs-12 img-col col-md-push-8">
+                                <img src="{{ i.imgurl }} " alt="Avatar " style="width: 100%;" class="img-responsive" alt="img" />
+                            </div>
+                            <div class="col-md-8 col-xs-12 main-content col-md-pull-4">
+                                <h2 class="title">
+                                    {{ i.title }}
+                                </h2>
 
-                                <h3 class="title">{{i.title}}</h3>
-                                <p class="desc desc1" [innerHTML]="i.desc "></p>
-
-                                <div class="author-date col-md-6 col-xs-12">
-                                    <p class="author-name">By {{i.name}}</p>
-                                    <p class="date">On {{i.created_date | date }}</p>
-                                </div>
-
-                                <!-- <div class="col-md-6 col-xs-6 read-more-btn">
-                            <button type="button" [routerLink]="[c]" class="btn btn-primary">Read full story</button>
-                        </div> -->
+                                <p class="desc desc1" [innerHTML]="i.desc| noSanitize"></p>
+                            </div>
+                            <div class="author-date col-md-6 col-xs-12">
+                                <p class="author-name">
+                                    By : {{ i.name }}
+                                </p>
+                                <p class="date">
+                                    On : {{ i.created_date | date }}
+                                </p>
                             </div>
                         </a>
-                        <div class="col-md-4 col-xs-5 img-col">
+                        <!--  <div class="col-md-4 col-xs-5 img-col">
                             <img src="{{i.imgurl}}" alt="Avatar" style="width:100%" class="img-responsive" alt="">
-                        </div>
+                        </div -->
                     </div>
                 </div>
                 <div class="loading-text text-left no-result">

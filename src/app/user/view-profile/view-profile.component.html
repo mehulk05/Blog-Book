@@ -33,7 +33,11 @@
 
     <div class="col-md-7 col-sm-12 center-block">
         <div class="row" *ngIf="ProfileData">
-            <div class="col-md-8 col-xs-8">
+            <div class="col-md-4 col-xs-12 col-md-push-8">
+                <img [src]="ProfileData.imgurl" class="img-circle" alt="" width="150" height="150">
+
+            </div>
+            <div class="col-md-8 col-xs-12 col-md-pull-4">
                 <h2>
                     Name : {{ProfileData.name}}
                 </h2>
@@ -51,10 +55,7 @@
                 </p>
             </div>
 
-            <div class="col-md-4 col-xs-4">
-                <img [src]="ProfileData.imgurl" class="img-circle" alt="" width="150" height="150">
 
-            </div>
         </div>
 
 

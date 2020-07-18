@@ -895,5 +895,12 @@ export class ACrudService {
       timeOut: 20000
     });
   }
+
+  showWarningForProfileSet() {
+    this.toastr.warning('Please set your Profile', 'Warning', {
+      timeOut: 20000
+    });
+  }
+
 }
 

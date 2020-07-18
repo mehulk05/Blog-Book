@@ -88,7 +88,7 @@
                     </div>
                 </div>
                 <!-- <p class="desc ">{{ unauthpost.desc }}</p> -->
-                <p class="desc" [innerHTML]="unauthpost.desc"></p>
+                <p class="desc" [innerHTML]="unauthpost.desc| noSanitize"></p>
 
             </div>
         </div>
@@ -129,7 +129,7 @@
                         <span>Like {{count}}</span></div>
                 </div>
 
-                <p class="desc" [innerHTML]="data.desc"></p>
+                <p class="desc" [innerHTML]="data.desc| noSanitize"></p>
 
 
             </div>
@@ -162,7 +162,7 @@
                 <!--   <img src="{{ i[id]?.imgurl }} " class="img-responsive " />
         <figcaption>{{ i[id]?.title }}</figcaption> -->
                 <!--    <p class="desc ">{{ i[id]?.desc }}</p> -->
-                <p class="desc " [innerHTML]="i[id]?.desc "></p>
+                <p class="desc " [innerHTML]="i[id]?.desc| noSanitize"></p>
 
 
             </div>
@@ -188,7 +188,7 @@
                 <figcaption>{{ i[id]?.title }}</figcaption>
                 <!--   <p class="desc ">{{ i[id]?.desc }}</p> -->
 
-                <p class="desc " [innerHTML]="i[id]?.desc "></p>
+                <p class="desc " [innerHTML]="i[id]?.desc| noSanitize"></p>
             </div>
         </div>
 
@@ -212,7 +212,7 @@
                 <figcaption>{{ i[id]?.title }}</figcaption>
                 <!-- <p class="desc ">{{ i[id]?.desc }}</p> -->
 
-                <p class="desc " [innerHTML]="i[id]?.desc "></p>
+                <p class="desc " [innerHTML]="i[id]?.desc| noSanitize"></p>
 
 
             </div>
