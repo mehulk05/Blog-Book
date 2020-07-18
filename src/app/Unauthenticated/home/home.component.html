@@ -1,44 +1,105 @@
 <div class="container">
 
 
+
     <div class="row">
-        <div class="col-md-7 col-sm-12 col-xs-12">
+        <div class="col-md-5 col-xs-12 col-md-push-7">
 
-            <div *ngIf="sorted && !isFetching">
+            <div class="search-hero search-input-wrapper fadeInUp hidden-md hidden-lg">
+                <label for="search"></label>
+                <input class="form-control" type="text" name="search" id="search" [(ngModel)]="searchText" autocomplete="off" placeholder="   Search by Title or Author name">
+                <div class="search-button"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg></div>
+            </div>
 
-                <div class="card row" *ngFor="let i of sorted ;let c= index ">
-                    <a [routerLink]="[c]">
+            <div *ngIf="(featuredPost  | filter:searchText ) as result">
+                <h3 class="Featured">Featured Posts</h3>
+                <div *ngIf="!isFetching && result?.length>0">
 
-                        <div class="col-md-8 col-xs-7 main-content">
 
-                            <h3 class="title">{{i.title}}</h3>
-                            <p>{{i.desc}} </p>
 
-                            <div class="author-date col-md-6 col-xs-12">
-                                <p class="author-name">By {{i.name}}</p>
-                                <p class="date">On {{i.created_date.toDate() | date }}</p>
+                    <div class="card row card-featured" *ngFor="let i of result ;let c= index ">
+                        <a [routerLink]="['/featured',c]">
+                            <div class="img img-col">
+                                <img src="{{i.imgurl}} " style="width:100%" class="img-responsive" alt="">
                             </div>
+                            <div class="title main-content">
+                                <h3 class="title">{{ i.title}}</h3>
+                                <!--   <p> {{i.desc}}</p> -->
+                                <p [innerHTML]="i.desc "></p>
 
-                            <!-- <div class="col-md-6 col-xs-6 read-more-btn">
-                            <button type="button" [routerLink]="[c]" class="btn btn-primary">Read full story</button>
-                        </div> -->
-                        </div>
-                    </a>
-                    <div class="col-md-4 col-xs-5 img-col">
-                        <img src="{{i.imgurl}}" alt="Avatar" style="width:100%" class="img-responsive">
+                                <div class="author-date">
+                                    <p class="author-name">By {{i.name}}</p>
+                                    <p class="date">On {{i.created_date | date:'mediumDate' }}</p>
+                                </div>
+
+                                <div class="likecomment">
+                                    <i style="font-size:21px" class="fa fa-heart"><span>{{i.likestatus.count}}</span></i>
+                                    <i style='font-size:21px' class='fa fa-comment-o'>{{commenData[c].length}}</i>
+                                </div>
+                            </div>
+                        </a>
                     </div>
                 </div>
-            </div>
 
-            <div *ngIf="isFetching && !error" class="loading-text">
-                <app-loading-spinner></app-loading-spinner>
-            </div>
-
-            <div *ngIf="error && !isFetching" class="error-text">
-                <h4>{{error}}</h4>
+                <div class="text-left no-result">
+                    <h4 *ngIf="result.length === 0">No Results Found</h4>
+                </div>
 
             </div>
         </div>
+        <div class="col-md-6 col-sm-12 col-xs-12 col-md-pull-5">
+
+            <div class="search-hero search-input-wrapper fadeInUp hidden-xs hidden-sm">
+                <label for="search1"></label>
+                <input class="form-control" type="text" id="search1" name="search1" [(ngModel)]="searchText" autocomplete="off" placeholder="   Search by Title or Author name">
+                <div class="search-button"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg></div>
+            </div>
+            <div *ngIf="(sorted | filter:searchText) as result ">
+                <h3 class="Featured hidden-md hidden-lg">Latest Posts</h3>
+                <div *ngIf="!isFetching && result?.length>0">
+
+
+
+
+                    <div class="card row" *ngFor="let i of result;let c= index ">
+                        <a [routerLink]="[c]">
+
+                            <div class="col-md-8 col-xs-7 main-content">
+
+                                <h3 class="title">{{i.title}}</h3>
+                                <p class="desc desc1" [innerHTML]="i.desc "></p>
+
+                                <div class="author-date col-md-6 col-xs-12">
+                                    <p class="author-name">By {{i.name}}</p>
+                                    <p class="date">On {{i.created_date | date }}</p>
+                                </div>
+
+                                <!-- <div class="col-md-6 col-xs-6 read-more-btn">
+                            <button type="button" [routerLink]="[c]" class="btn btn-primary">Read full story</button>
+                        </div> -->
+                            </div>
+                        </a>
+                        <div class="col-md-4 col-xs-5 img-col">
+                            <img src="{{i.imgurl}}" alt="Avatar" style="width:100%" class="img-responsive" alt="">
+                        </div>
+                    </div>
+                </div>
+                <div class="loading-text text-left no-result">
+                    <h4 *ngIf="result.length === 0">No Results Found</h4>
+                </div>
+            </div>
+
+
+        </div>
+
+
+
 
 
         <!-- <ng-template #loading>
@@ -56,6 +117,17 @@
     </ng-template>
     <div class="col-sm-4 col-xs-12">
     </div> -->
+
+        <div *ngIf="isFetching && !error" class="loading-text">
+            <app-loading-spinner></app-loading-spinner>
+        </div>
+
+        <div *ngIf="error && !isFetching" class="error-text">
+            <h4>{{error}}</h4>
+
+        </div>
     </div>
 </div>
+
+
 <router-outlet></router-outlet>

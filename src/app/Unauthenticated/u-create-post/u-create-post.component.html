@@ -4,26 +4,42 @@
 
 
     <div class="col-md-10 col-sm-12 col-xs-12 center-block">
-        <form class="create-form" [formGroup]="exampleForm" novalidate (ngSubmit)="onSubmit(exampleForm.value)">
+
+        <div class="alert alert-danger" *ngIf="error">
+            <p>{{ error }}</p>
+        </div>
+        <div *ngIf="isloading" style="text-align: center;" class="loading-text">
+            <app-loading-spinner></app-loading-spinner>
+        </div>
+        <form *ngIf="!isloading" class="create-form" [formGroup]="exampleForm" novalidate (ngSubmit)="onSubmit(exampleForm.value)">
 
             <div class="col-md-4 col-sm-3 col-xs-12">
-                <input type="file" multiple (change)="detectFiles($event) " accept="image/x-png,image/gif,image/jpeg" class="form-control" formControlName="imgurl">
+                <input type="file" multiple (change)="detectFiles($event)" accept="image/x-png,image/gif,image/jpeg" class="form-control" formControlName="imgurl">
                 <img id="blah" height="200" width="200" class="img-rounded" [src]="imageSrc || 'http://placehold.it/180'" alt="your image" />
 
-                <div>{{ uploadPercent | async }}</div>
-                <a href="{{downloadURL}}">your url is  {{ downloadURL }}</a>
+                <div class="col-xs-2 percantage">
+                    <h3>{{ uploadPercent | async }}</h3>
+                </div>
+                <div class="col-xs-3" *ngIf="isimgloading" style="width: 30px; height: 30px;">
+                    <img src="/assets/Eclipse-1s-200px.gif" style="width: 60px; height: 60px;">
+                </div>
+                <div class="col-xs-7" *ngIf="uploadPercent && !isimgloading">
+                    <a href="{{downloadURL}}">To view Image click here</a>
+                </div>
+
             </div>
             <br>
-            <div class="col-md-8 col-sm-9 col-xs-12">
+            <div class=" col-md-8 col-sm-9 col-xs-12">
 
 
-                <div class="form-group ">
+                <div class="form-group">
                     <label for="comment">Title:</label>
                     <div class="input-style">
-                        <input placeholder="Name" class="form-control" formControlName="title">
+                        <input placeholder="Title" class="form-control" formControlName="title">
                     </div>
                     <ng-container *ngFor="let validation of validation_messages.title">
-                        <div class="help-block has-error" *ngIf="exampleForm.get('title').hasError(validation.type) && (exampleForm.get('title').dirty || exampleForm.get('title').touched)">{{validation.message}}</div>
+                        <div class="help-block has-error" *ngIf="exampleForm.get( 'title').hasError(validation.type) && (exampleForm.get( 'title').dirty || exampleForm.get( 'title').touched)">
+                            {{validation.message}}</div>
                     </ng-container>
                 </div>
 
@@ -32,24 +48,29 @@
                     <label for="comment">Description:</label>
                     <textarea class="form-control" rows="5" id="comment" formControlName="desc"></textarea>
                     <ng-container *ngFor="let validation of validation_messages.desc">
-                        <div class="help-block has-error" *ngIf="exampleForm.get('desc').hasError(validation.type) && (exampleForm.get('desc').dirty || exampleForm.get('desc').touched)">{{validation.message}}</div>
+                        <div class="help-block has-error" *ngIf="exampleForm.get( 'desc').hasError(validation.type) && (exampleForm.get( 'desc').dirty || exampleForm.get( 'desc').touched)">
+                            {{validation.message}}</div>
+                        <div class="help-block has-error" *ngIf="exampleForm.get( 'desc').hasError( 'minlength') && ( exampleForm.get( 'desc').touched)">
+                            Minimun 50 characters required in description</div>
+
                     </ng-container>
                 </div>
 
                 <div class="form-group">
                     <label for="sel1">Category list:</label>
                     <select class="form-control" formControlName="category" #t (change)="onChange(t.value)">
-                    <option *ngFor="let value of values" >{{value}} </option>
-                </select>
+                        <option *ngFor="let value of values">{{value}} </option>
+                    </select>
 
                     <ng-container *ngFor="let validation of validation_messages.category">
-                        <div class="help-block has-error" *ngIf="exampleForm.get('category').hasError(validation.type) && (exampleForm.get('category').dirty || exampleForm.get('category').touched)">{{validation.message}}</div>
+                        <div class="help-block has-error" *ngIf="exampleForm.get( 'category').hasError(validation.type) && (exampleForm.get( 'category').dirty || exampleForm.get( 'category').touched)">
+                            {{validation.message}}</div>
                     </ng-container>
 
 
                 </div>
                 <div class="form-group">
-                    <div class="input-style" *ngIf="selected == 'Other'">
+                    <div class="input-style" *ngIf="selected=='Other'">
                         <input placeholder="Other category" class="form-control" formControlName="subcategory">
                     </div>
                 </div>
@@ -61,25 +82,27 @@
                         <input placeholder="Name" class="form-control" formControlName="name">
                     </div>
                     <ng-container *ngFor="let validation of validation_messages.name">
-                        <div class="help-block has-error" *ngIf="exampleForm.get('name').hasError(validation.type) && (exampleForm.get('name').dirty || exampleForm.get('name').touched)">{{validation.message}}</div>
+                        <div class="help-block has-error" *ngIf="exampleForm.get( 'name').hasError(validation.type) && (exampleForm.get( 'name').dirty || exampleForm.get( 'name').touched)">
+                            {{validation.message}}</div>
                     </ng-container>
                 </div>
 
-                <div *ngIf="isAuthenticated" class="form-group ">
+                <div *ngIf="isAuthenticated" class="form-group">
                     <label for="comment">Keep your post Public:</label>
                     <div class="input-style">
                         <label class="md-check">
-                        <input type="radio" value="true" name="privacy" formControlName="privacy" checked="true">
-                        Yes keep my post Public 
-                      </label>
+                            <input type="radio" value="true" name="privacy" formControlName="privacy" checked="true">
+                            Yes keep my post Public
+                        </label>
                         <br>
                         <label class="md-check">
-                        <input type="radio" value="false" name="privacy" formControlName="privacy">     
-                        No keep it private
-                      </label>
+                            <input type="radio" value="false" name="privacy" formControlName="privacy">
+                            No keep it private
+                        </label>
                     </div>
                     <ng-container *ngFor="let validation of validation_messages.title">
-                        <div class="help-block has-error" *ngIf="exampleForm.get('title').hasError(validation.type) && (exampleForm.get('title').dirty || exampleForm.get('title').touched)">{{validation.message}}</div>
+                        <div class="help-block has-error" *ngIf="exampleForm.get( 'title').hasError(validation.type) && (exampleForm.get( 'title').dirty || exampleForm.get( 'title').touched)">
+                            {{validation.message}}</div>
                     </ng-container>
                 </div>
                 <div class="row submit-button-container">

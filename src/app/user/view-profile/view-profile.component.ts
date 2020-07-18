@@ -30,31 +30,27 @@ export class ViewProfileComponent implements OnInit {
     private acrud: ACrudService,
     private authService: AuthService,
     private router: Router,
-    private route: ActivatedRoute, ) { }
+    private route: ActivatedRoute,) { }
 
   ngOnInit(): void {
 
-   
-
     this.userSub = this.authService.user.subscribe(user => {
-      //console.log(user)
+
       if (user) {
         this.isAuthenticated = !!user;
-        console.log(user.id)
+
       }
-    
+
     });
 
 
- 
+
 
     this.route.params
       .subscribe(
         (params: Params) => {
           this.unameParam = params['username'];
-
           this.getUidFromService()
-
 
           if (this.isAuthenticated) {
             this.acrud.getProfile().subscribe(d => {
@@ -71,29 +67,20 @@ export class ViewProfileComponent implements OnInit {
               }
             })
 
-
           }
           if (!this.isAuthenticated) {
             this.ismyself = false
             this.getPrfoileFromPublicDb()
-            // console.log("hello")
+
           }
-       
+
 
         })
-
-  
-
-
-
-
 
   }
   getPrfoileFromPublicDb() {
     this.isloading = true
-    console.log(this.unameParam)
     this.acrud.getPublicProfile(this.unameParam).subscribe(d => {
-      console.log(d)
       let x = this.acrud.seprate(d)
       this.ProfileData = x[0]
       this.isloading = false
@@ -102,26 +89,20 @@ export class ViewProfileComponent implements OnInit {
   getPrfoileFromPersonalDb() {
     this.isloading = true
     this.acrud.getProfile().subscribe(d => {
-
-
       let x = this.acrud.seprate(d)
       this.ProfileData = x[0]
       this.username = this.ProfileData.uname
-      console.log(this.username)
-      console.log(this.ProfileData.name)
       this.isloading = false
 
     })
   }
 
   getUidFromService() {
-   
+
     this.acrud.getPublicProfile(this.unameParam).subscribe(d => {
       let x = this.acrud.seprate(d)
-      console.log(x)
       if (x[0]) {
         let y = x[0].id
-
         this.getPublicPostsFromProfileId(y)
         this.getPrivatePostsFromProfileId(y)
 
@@ -130,40 +111,32 @@ export class ViewProfileComponent implements OnInit {
         this.router.navigate(["home"])
       }
 
-    
+
     })
   }
   getPrivatePostsFromProfileId(y: any) {
-    
+
     this.acrud.getPrivateFromProfileId(y).subscribe(d => {
       let x = this.acrud.seprate(d)
-
-
-      //this.PublicPosts = x
       this.prcount = x.length
       this.allcount += this.prcount
-     
+
     })
 
   }
   getPublicPostsFromProfileId(y: any) {
-   
-    console.log(y)
+
     this.acrud.getPublicPostsFromProfileId(y).subscribe(d => {
       let x = this.acrud.seprate(d)
 
-      //this.PublicPosts = x
       this.pbcount = x.length
       this.allcount += this.pbcount
-     
+
     })
   }
 
 
   ngOnDestroy() {
-  /*   this.userSub.unsubscribe();
-
-    console.log("user Destroyed") */
-
+    this.userSub.unsubscribe();
   }
 }

@@ -13,3 +13,19 @@
         padding-left: 50px;
     }
 }
+
+.center-block {
+    padding: 25px;
+    box-shadow: 0 10px 35px rgba(0, 0, 0, .1);
+}
+
+p,
+h5 {
+    font-size: 16px;
+}
+
+h2,
+p,
+b {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}

@@ -6,6 +6,14 @@ input[type="file"] {
     margin-bottom: 25px;
 }
 
+.percantage {
+    width: 29%;
+}
+
 .center-block {
     float: none
+}
+
+.col-xs-7 {
+    padding-top: 15px;
 }

@@ -3,7 +3,7 @@
     "version": 1,
     "newProjectRoot": "projects",
     "projects": {
-        "write-your-heart-out1": {
+        "BlogBook": {
             "projectType": "application",
             "schematics": {},
             "root": "",
@@ -13,7 +13,7 @@
                 "build": {
                     "builder": "@angular-devkit/build-angular:browser",
                     "options": {
-                        "outputPath": "dist/write-your-heart-out1",
+                        "outputPath": "dist/BlogBook",
                         "index": "src/index.html",
                         "main": "src/main.ts",
                         "polyfills": "src/polyfills.ts",
@@ -63,18 +63,18 @@
                 "serve": {
                     "builder": "@angular-devkit/build-angular:dev-server",
                     "options": {
-                        "browserTarget": "write-your-heart-out1:build"
+                        "browserTarget": "BlogBook:build"
                     },
                     "configurations": {
                         "production": {
-                            "browserTarget": "write-your-heart-out1:build:production"
+                            "browserTarget": "BlogBook:build:production"
                         }
                     }
                 },
                 "extract-i18n": {
                     "builder": "@angular-devkit/build-angular:extract-i18n",
                     "options": {
-                        "browserTarget": "write-your-heart-out1:build"
+                        "browserTarget": "BlogBook:build"
                     }
                 },
                 "test": {
@@ -111,16 +111,16 @@
                     "builder": "@angular-devkit/build-angular:protractor",
                     "options": {
                         "protractorConfig": "e2e/protractor.conf.js",
-                        "devServerTarget": "write-your-heart-out1:serve"
+                        "devServerTarget": "BlogBook:serve"
                     },
                     "configurations": {
                         "production": {
-                            "devServerTarget": "write-your-heart-out1:serve:production"
+                            "devServerTarget": "BlogBook:serve:production"
                         }
                     }
                 }
             }
         }
     },
-    "defaultProject": "write-your-heart-out1"
+    "defaultProject": "BlogBook"
 }

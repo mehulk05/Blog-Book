@@ -8,10 +8,10 @@
 
             <div class="col-md-4 col-sm-3 col-xs-12">
                 <input type="file" multiple (change)="detectFiles($event) " accept="image/x-png,image/gif,image/jpeg" class="form-control" formControlName="imgurl">
-                <img id="blah" height="200" width="200" class="img-rounded" [src]="imageSrc || 'http://placehold.it/180'" alt="your image" />
+                <img alt="" id="blah" height="200" width="200" class="img-rounded" [src]="imageSrc || 'http://placehold.it/180'" alt="your image" />
 
                 <div>{{ uploadPercent | async }}</div>
-                <a href="{{downloadURL}}">  Click Here To View Your Image</a>
+                <a href="{{downloadURL}}"> Click Here To View Your Image</a>
             </div>
             <br>
             <div class="col-md-8 col-xs-12">
@@ -23,10 +23,12 @@
                         <input placeholder="User Name" class="form-control" formControlName="uname" (focus)="clearError()" (blur)="checkUsername($event.target.value)">
                     </div>
                     <ng-container *ngFor="let validation of validation_messages.uname">
-                        <div class="help-block has-error" *ngIf="ProfileForm.get('uname').hasError(validation.type) && (ProfileForm.get('uname').dirty || ProfileForm.get('uname').touched)">{{validation.message}}</div>
+                        <div class="help-block has-error" *ngIf="ProfileForm.get('uname').hasError(validation.type) && (ProfileForm.get('uname').dirty || ProfileForm.get('uname').touched)">
+                            {{validation.message}}</div>
                     </ng-container>
                     <ng-container *ngIf="erroUsername && !oldusername">
-                        <div class="help-block has-error" *ngIf="ProfileForm.get('uname') && (ProfileForm.get('uname').dirty || ProfileForm.get('uname').touched)">{{erroUsername}}</div>
+                        <div class="help-block has-error" *ngIf="ProfileForm.get('uname') && (ProfileForm.get('uname').dirty || ProfileForm.get('uname').touched)">
+                            {{erroUsername}}</div>
                     </ng-container>
                 </div>
 
@@ -37,7 +39,8 @@
                         <input placeholder="User Name" class="form-control" formControlName="email">
                     </div>
                     <ng-container *ngFor="let validation of validation_messages.email">
-                        <div class="help-block has-error" *ngIf="ProfileForm.get('email').hasError(validation.type) && (ProfileForm.get('email').dirty || ProfileForm.get('email').touched)">{{validation.message}}</div>
+                        <div class="help-block has-error" *ngIf="ProfileForm.get('email').hasError(validation.type) && (ProfileForm.get('email').dirty || ProfileForm.get('email').touched)">
+                            {{validation.message}}</div>
                     </ng-container>
                 </div>
 
@@ -51,7 +54,8 @@
                         <input placeholder="Name" class="form-control" formControlName="name">
                     </div>
                     <ng-container *ngFor="let validation of validation_messages.name">
-                        <div class="help-block has-error" *ngIf="ProfileForm.get('name').hasError(validation.type) && (ProfileForm.get('name').dirty || ProfileForm.get('name').touched)">{{validation.message}}</div>
+                        <div class="help-block has-error" *ngIf="ProfileForm.get('name').hasError(validation.type) && (ProfileForm.get('name').dirty || ProfileForm.get('name').touched)">
+                            {{validation.message}}</div>
                     </ng-container>
                 </div>
 

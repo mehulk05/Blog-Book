@@ -10,7 +10,7 @@
 .title {
     line-height: 48px;
     font-size: 40px;
-    font-family: medium-content-title-font, Georgia, Cambria, "Times New Roman", Times, serif;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
     color: rgba(0, 0, 0, 0.84);
     font-weight: 400;
 }
@@ -57,8 +57,8 @@ figcaption {
 
 .desc {
     margin-top: 2em;
-    font-size: 21px;
-    font-family: medium-content-serif-font, Georgia, Cambria, "Times New Roman", Times, serif;
+    font-size: 18px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 }
 
 .heart {
@@ -108,10 +108,14 @@ figcaption {
 }
 
 @media screen and (max-width:767px) {
-    .date {
+    .post-exist+.container-postdetil {
+        float: none;
+    }
+    .avtar .date {
         margin: 0;
         float: left;
         margin-left: 15px;
+        margin-top: 8px;
     }
     .avtar-text {
         margin-top: 0;
@@ -120,4 +124,96 @@ figcaption {
     .post-img {
         margin-top: 115px;
     }
+    .heart {
+        top: -37px
+    }
+     :host::ng-deep section h2:nth-child(6) {
+        font-size: 16px;
+    }
+     :host::ng-deep section a {
+        word-break: break-word;
+        font-size: 16px;
+    }
+     :host::ng-deep section p {
+        font-size: 14px;
+    }
+}
+
+:host::ng-deep section img,
+:host::ng-deep p.desc img {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    float: none;
+    display: table;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    width: 100%;
+}
+
+.heart span {
+    color: #0d6fc3;
+    white-space: nowrap;
+    font-weight: 700;
+    font-size: 16px;
+}
+
+.author-name:hover {
+    cursor: pointer;
+}
+
+div#myModal {
+    top: 20%
+}
+
+.commentsection {
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}
+
+.commentsection h4 {
+    display: inline;
+    color: #000;
+    font-weight: 600;
+}
+
+.commentsection .date {
+    float: right;
+}
+
+.data {
+    padding-top: 15px;
+}
+
+.commentsection hr {
+    display: none;
+}
+
+.commentsection div {
+    padding: 15px;
+    margin-bottom: 25px;
+    box-shadow: 0 10px 35px rgba(0, 0, 0, .1);
+}
+
+.row.submit-button-container {
+    padding-bottom: 25px;
+}
+
+.avtar+img {
+    box-shadow: 0 10px 35px rgba(0, 0, 0, .1);
+}
+
+.category,
+.category {
+    margin: 0;
+    margin-top: 8px;
+}
+
+.category span {
+    padding-left: 10px;
+}
+
+.avtar+div img {
+    margin-left: auto;
+    margin-right: auto;
 }

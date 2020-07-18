@@ -1,0 +1,21 @@
+.text-info {
+    padding-top: 35px;
+}
+
+.redirect:hover {
+    cursor: pointer;
+}
+
+.redirect {
+    font-weight: bold;
+}
+
+.btnPrimary {
+    margin-top: 25px;
+}
+
+@media screen and (max-width:767px) {
+    .part2 p {
+        text-align: left;
+    }
+}

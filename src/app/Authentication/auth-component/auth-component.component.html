@@ -3,8 +3,8 @@
         <div class="alert alert-danger" *ngIf="error">
             <p>{{ error }}</p>
         </div>
-        <div *ngIf="isLoading" style="text-align: center;">
-
+        <div *ngIf="isLoading" style="text-align: center;" class="loading-text">
+            <app-loading-spinner></app-loading-spinner>
         </div>
         <form #authForm="ngForm" (ngSubmit)="onSubmit(authForm)" *ngIf="!isLoading">
             <div class="form-group">
@@ -16,20 +16,24 @@
                 <label for="password">Password</label>
                 <input type="password" id="password" class="form-control" ngModel name="password" required minlength="6" />
             </div>
-            <div>
+
+            <div class="form-group">
                 <button class="btn btn-primary" type="submit" [disabled]="!authForm.valid">
-          {{ isLoginMode ? 'Login' : 'Sign Up' }}
-        </button> |
+                    {{ isLoginMode ? 'Login' : 'Sign Up' }}
+                </button> |
                 <button class="btn btn-primary" (click)="onSwitchMode()" type="button">
-          Switch to {{ isLoginMode ? 'Sign Up' : 'Login' }}
-        </button>
+                    Switch to {{ isLoginMode ? 'Sign Up' : 'Login' }}
+                </button>
+
+                <a [routerLink]="['/reset-password']" class="btn btn-link">Forget Password</a>
+
             </div>
 
             <div class="form-group">
                 <button type="button" class="btn btn-block" (click)="tryGoogleLogin()">
                     <i class="fa fa-google" aria-hidden="true"></i>
                     Login with Google
-                  </button>
+                </button>
             </div>
         </form>
     </div>

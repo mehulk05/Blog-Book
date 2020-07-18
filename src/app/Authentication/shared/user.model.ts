@@ -1,4 +1,5 @@
 export class User {
+  uid: string;
   constructor(
     public email: string,
     public id: string,
@@ -15,11 +16,20 @@ export class User {
 }
 
 export class Profile {
-  
+
   desc: string;
   email: string;
   imgurl: string;
   name: string;
   uname: string;
-  isProfileSet?:boolean
+  isProfileSet?: boolean
+}
+
+
+export interface User1 {
+  uid: string;
+  email: string;
+  displayName: string;
+  photoURL: string;
+  emailVerified: boolean;
 }

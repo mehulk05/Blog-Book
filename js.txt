@@ -1,5 +1,0 @@
-jQuery("a.cc_btn.cc_btn_accept_all").click(function(){
- 
-   jQuery("body").addClass("cookie-accepted");
-  
-});

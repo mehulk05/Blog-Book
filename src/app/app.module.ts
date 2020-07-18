@@ -33,8 +33,10 @@ import { ViewProfileComponent } from './user/view-profile/view-profile.component
 import { ViewOnlyPublicPostComponent } from './user/view-only-public-post/view-only-public-post.component';
 import { AuthGuard } from './Authentication/shared/auth-guard.service';
 import { LoadingSpinnerComponent } from './spinner/loading-spinner/loading-spinner.component';
-
-
+import { Ng2SearchPipeModule } from 'ng2-search-filter';
+import { ResetpasswordComponent } from './Authentication/resetpassword/resetpassword.component';
+import { ToastrModule } from 'ngx-toastr';
+import { VerifyMailComponent } from './Authentication/verify-mail/verify-mail.component';
 
 
 
@@ -51,6 +53,9 @@ import { LoadingSpinnerComponent } from './spinner/loading-spinner/loading-spinn
     ViewProfileComponent,
     ViewOnlyPublicPostComponent,
     LoadingSpinnerComponent,
+    ResetpasswordComponent,
+    VerifyMailComponent,
+
     
     
   ],
@@ -65,6 +70,8 @@ import { LoadingSpinnerComponent } from './spinner/loading-spinner/loading-spinn
     AngularFireAuthModule,
     AngularFireStorageModule,
     AngularFirestoreModule, // imports firebase/firestore, only needed for database features
+    Ng2SearchPipeModule,
+    ToastrModule.forRoot()
 
   ],
   providers: [CrudService,AuthService,ACrudService,AuthGuard],

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute, Router, Params } from '@angular/router';
 import { CrudService } from '../shared/crud.service';
 import { UPost, LikeUser } from '../shared/UPost.model';
@@ -12,7 +12,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 @Component({
   selector: 'app-upost-detail',
   templateUrl: './upost-detail.component.html',
-  styleUrls: ['./upost-detail.component.css']
+  styleUrls: ['./upost-detail.component.css'],
+
 })
 export class UPostDetailComponent implements OnInit {
   CommentForm: FormGroup;
@@ -23,7 +24,7 @@ export class UPostDetailComponent implements OnInit {
   private userSub: Subscription;
   post_userid: string
 
-  count: number
+  count: number = 0
   SinglePost: any
   private puSub: Subscription;
   private prSub: Subscription
@@ -51,8 +52,16 @@ export class UPostDetailComponent implements OnInit {
   Comment_Data: any[];
   unauthpost: UPost;
   postDate: any;
-ProfileImgUrl:string
-  isImgLoaded: boolean=false;
+  ProfileImgUrl: string
+  isImgLoaded: boolean = false;
+  username: string;
+  profileuname: any;
+  publicpostOfSingleUser: any;
+  isPublicPostOfSingleUser: boolean;
+  posttitle: string;
+  postdesc: string;
+  showComment: boolean = false
+
 
   /*   LikeData: {count:number,uid:{islike:boolean,uid:string}}; */
   constructor(private route: ActivatedRoute,
@@ -75,15 +84,21 @@ ProfileImgUrl:string
     this.route.params
       .subscribe(
         (params: Params) => {
+
           this.id = +params['id'];
-          console.log(this.id)
+
           this.postype = params['type']
-          console.log(this.postype)
+
 
           if (this.xyz[1] == "home") {
-            this.getUauthPublicPost();
+            this.getAllPost();
+            this.showComment = true
           }
 
+          if (this.xyz[1] == "featured") {
+            this.getFeaturedPost()
+            this.showComment = true
+          }
           if (this.postype === 'allpost') {
 
             this.getAuthAllPost();
@@ -92,46 +107,173 @@ ProfileImgUrl:string
           if (this.postype === 'public') {
             this.acrud.getDemo2()
             this.getAuthPublicPost();
+            this.showComment = true
           }
 
           if (this.postype === 'private') {
             this.acrud.getDemo1();
             this.getAuthPrivatePost();
+            this.showComment = false
+          }
+          if (this.xyz[3] === 'publicposts') {
+            this.profileuname = this.xyz[2]
+            this.getPostFromProfile(this.profileuname);
+            this.showComment = true
           }
         })
 
-    console.log(this.xyz);
 
     this.userSub = this.authService.user.subscribe(user => {
       if (user) {
-        this.currentUserId = user.id
+        this.currentUserId = user.uid
       }
       this.isAuthenticated = !!user;
     })
+
+    if (this.isAuthenticated) {
+      this.getUidandUname()
+    }
 
     this.getLikeCountandStatus()
     this.CallCommentForm()
   }
 
+  getUidandUname() {
+    this.acrud.getProfile().subscribe(d => {
+      let x = this.acrud.seprate(d)
+
+      this.username = x[0].uname
+
+    })
+  }
   getLikeCountandStatus() {
     this.acrud.PostDataForLikeCount.subscribe(d => {
-      this.count = d
-      console.log(d)
+      if (d) {
+        this.count = d
+
+      }
+
 
     })
     this.acrud.PostDataForLikedByUser.subscribe(d => {
       let x = this.acrud.seprate(d)
-      console.log(x)
+
       for (const i in x) {
         if ((x[i].uid) == this.currentUserId) {
           this.likeStatus = x[i].islike
-          console.log(this.likeStatus)
+
         }
       }
 
     })
   }
+  getPostFromProfile(uname) {
+    this.acrud.getPublicProfile(uname).subscribe(d => {
+      let x = this.acrud.seprate(d)
+      let y = x[0].id
 
+      this.getPublicPostsFromProfileId(y)
+
+      this.acrud.getPublicProfile(uname).subscribe(
+        d => {
+          let x = this.acrud.seprate(d)
+          this.ProfileImgUrl = x[0]?.imgurl
+
+        }
+      )
+    })
+  }
+  getPublicPostsFromProfileId(profileid) {
+    this.isPublicPostOfSingleUser = false
+    this.acrud.getPublicPostsFromProfileId(profileid).subscribe(d => {
+      this.isPublicPostOfSingleUser = true
+      let x = this.acrud.seprate(d)
+      this.sortDesecendingByDate(x)
+      this.publicpostOfSingleUser = x[this.id]
+      let id = this.id
+      this.posttitle = this.publicpostOfSingleUser.title
+      this.postdesc = this.publicpostOfSingleUser.desc
+      this.post_userid = this.publicpostOfSingleUser.uid
+      this.getComment(this.publicpostOfSingleUser.uid, this.publicpostOfSingleUser.title, this.publicpostOfSingleUser.desc)
+      this.acrud.getPostDetailForLike(this.post_userid, this.posttitle, this.postdesc)
+
+
+    })
+  }
+
+  getFeaturedPost() {
+    this.isFetching = true
+
+
+    this.acrud.getFeaturedPost().then((d: any) => {
+
+
+      this.publicpostOfSingleUser = d[this.id]
+      this.acrud.getPublicProfile(this.publicpostOfSingleUser.uname).subscribe(
+        d => {
+          let x = this.acrud.seprate(d)
+          this.ProfileImgUrl = x[0]?.imgurl
+
+        }
+      )
+
+      let id = this.id
+      this.posttitle = this.publicpostOfSingleUser.title
+      this.postdesc = this.publicpostOfSingleUser.desc
+      this.post_userid = this.publicpostOfSingleUser.uid
+      this.getComment(this.publicpostOfSingleUser.uid, this.publicpostOfSingleUser.title, this.publicpostOfSingleUser.desc)
+      this.acrud.getPostDetailForLike(this.post_userid, this.posttitle, this.postdesc)
+
+      this.isFetching = false
+    })
+  }
+
+  getAllPost() {
+    this.isUnauth = true
+    this.isFetching = true;
+    this.acrud.getAllPost().then((x: any) => {
+      this.isFetching = false
+      this.sortDesecendingByDate(x)
+
+
+      this.unauthpost = x[this.id]
+
+
+
+      if (this.unauthpost?.uid) {
+
+        this.post_userid = this.unauthpost?.uid
+        this.posttitle = this.unauthpost?.title
+        this.postdesc = this.unauthpost?.desc
+
+        this.getProfileFromUid(this.post_userid)
+        this.postDate = this.unauthpost.created_date
+
+        this.acrud.getPostDetailForLike(this.post_userid, this.posttitle, this.postdesc)
+
+        this.getComment(this.post_userid, this.unauthpost.title, this.unauthpost.desc)
+
+      }
+      else {
+        this.router.navigate(["home"])
+      }
+    },
+      err => {
+        this.isFetching = false
+        this.error = err;
+
+      })
+
+
+
+  }
+
+
+  sortDesecendingByDate(data) {
+    return data.sort((a: any, b: any) =>
+      <any>new Date(b.created_date) - <any>new Date(a.created_date)
+    )
+  }
   getUauthPublicPost() {
     this.isUnauth = true
     this.isFetching = true;
@@ -160,13 +302,16 @@ ProfileImgUrl:string
         if (this.unauthpost?.uid) {
 
           this.post_userid = this.unauthpost?.uid
+          this.posttitle = this.unauthpost?.title
+          this.postdesc = this.unauthpost?.desc
+
           this.getProfileFromUid(this.post_userid)
           this.postDate = this.unauthpost.created_date
           this.postDate = this.postDate.toDate()
-          this.acrud.getPostDetailForLike(this.post_userid, this.unauthpost.title, this.unauthpost.desc)
+          this.acrud.getPostDetailForLike(this.post_userid, this.posttitle, this.postdesc)
 
-          console.log(this.post_userid, this.currentUserId, this.unauthpost.title, this.unauthpost.desc)
-         this.getComment(this.post_userid, this.unauthpost.title, this.unauthpost.desc)
+
+          this.getComment(this.post_userid, this.unauthpost.title, this.unauthpost.desc)
 
         }
         else {
@@ -179,15 +324,15 @@ ProfileImgUrl:string
 
   }
 
-  getComment(postid,title,desc){
-  let  CommentKeyPromise = this.acrud.getCommentKey(postid, title, desc)
-    .then(d => {
-      return new Promise(resolve => {
-        resolve(d)
-        console.log(d)
-      })
+  getComment(postid, title, desc) {
+    let CommentKeyPromise = this.acrud.getCommentKey(postid, title, desc)
+      .then(d => {
+        return new Promise(resolve => {
+          resolve(d)
 
-    })
+        })
+
+      })
 
     if (CommentKeyPromise) {
 
@@ -195,7 +340,7 @@ ProfileImgUrl:string
       CommentKeyPromise.then(key => {
         this.acrud.getCommentDataFromKey(postid, key)
           .subscribe((commentData: Comment) => {
-            console.log(commentData)
+
             this.Comment_Data = this.acrud.seprate(commentData)
 
             if (commentData) {
@@ -210,7 +355,7 @@ ProfileImgUrl:string
                   let x = this.acrud.seprate(data)
 
                   this.Comment_Data[i].uname = x[0].uname
-                  console.log(this.Comment_Data[i].uname)
+
                 })
 
             }
@@ -221,34 +366,44 @@ ProfileImgUrl:string
     }
   }
 
-getProfileFromUid(postuserid){
-this.acrud.getPrivateFromProfileId(postuserid)
-.subscribe((data)=>{
-  let profile=this.acrud.seprate(data)
-  this.ProfileImgUrl=profile[0].imgurl
- 
-})
+  getProfileFromUid(postuserid) {
+
+    this.acrud.getProfileFromUid(postuserid)
+      .subscribe((data) => {
+
+        let profile = this.acrud.seprate(data)
+
+        this.ProfileImgUrl = profile[0].imgurl
+
+
+      })
   }
   getAuthPublicPost() {
 
-    console.log("public post")
+
     this.isAll = false;
     this.isPublic = true;
     this.isPrivate = false;
     this.isFetching = true;
 
     this.puSub = this.acrud.pu.subscribe(d => {
-      
-      if(d)
-      {
+
+      if (d) {
+        this.sortDesecendingByDate(d)
         this.public_post = d
-      let id=this.id
-      this.getComment(this.public_post[id].uid,this.public_post[id].title,this.public_post[id].desc)
-      //this.SinglePost=this.public_post[this.id]
-      console.log("===========================#", this.public_post)
-      // this.SinglePost = this.public_post[this.id]
-    }
-  },
+        if (this.public_post) {
+
+        }
+        let id = this.id
+        this.posttitle = this.public_post[id].title
+        this.postdesc = this.public_post[id].desc
+        this.post_userid = this.public_post[id].uid
+        this.getComment(this.public_post[id].uid, this.public_post[id].title, this.public_post[id].desc)
+        //this.SinglePost=this.public_post[this.id]
+
+        // this.SinglePost = this.public_post[this.id]
+      }
+    },
       err =>
         this.error = err)
 
@@ -257,14 +412,14 @@ this.acrud.getPrivateFromProfileId(postuserid)
   getAuthAllPost() {
     this.isFetching = true
 
-    console.log(this.isFetching)
+
     this.isAll = true;
     this.isPublic = false;
     this.isPrivate = false;
 
     this.acrud.getAllData()
       .subscribe(data => {
-        console.log(data)
+
         this.isFetching = false
         let x1 = data[0]
         let x2 = data[1]
@@ -274,7 +429,21 @@ this.acrud.getPrivateFromProfileId(postuserid)
 
         let x5 = x3.concat(x4)
         this.allPost = x5
-        console.log(this.allPost)
+        this.sortDesecendingByDate(this.allPost)
+
+        let id = this.id
+        if (this.allPost[id]?.privacy == "true") {
+          this.showComment = true;
+        }
+
+        if (this.allPost[id]?.privacy == "false") {
+          this.showComment = false;
+        }
+        this.posttitle = this.allPost[id].title
+        this.postdesc = this.allPost[id].desc
+        this.post_userid = this.allPost[id].uid
+        this.getComment(this.allPost[id].uid, this.allPost[id].title, this.allPost[id].desc)
+
       },
 
         err => {
@@ -294,7 +463,7 @@ this.acrud.getPrivateFromProfileId(postuserid)
         (params: Params) => {
           this.id = +params['id'];
 
-          console.log("private post")
+
           this.isAll = false;
           this.isPublic = false;
           this.isPrivate = true;
@@ -304,13 +473,9 @@ this.acrud.getPrivateFromProfileId(postuserid)
             this.isFetching = false
             this.private_post = d
             this.SinglePost = this.private_post[this.id]
-            console.log("####################", this.SinglePost)
-
-            console.log("-------------------", d)
 
           })
-          //      this.SinglePost = this.private_post[this.id]
-          console.log("-----------------", this.SinglePost)
+
         });
 
   }
@@ -319,30 +484,26 @@ this.acrud.getPrivateFromProfileId(postuserid)
 
   }
 
-  OnLike(value, Likecount) {
-
-  }
 
   Like() {
-    
+
     if (!this.currentUserId) {
       this.router.navigate(["/auth"])
     }
 
     else {
       let likestatus = this.likeStatus;
-      console.log(likestatus)
+
       if (likestatus) {
         this.count = this.count - 1
-        console.log("liked", likestatus, this.count)
 
-      } 
+      }
       else {
         this.count = this.count + 1
-        console.log("UNlike", likestatus, this.count)
+
       }
       this.likeStatus = !this.likeStatus;
-      this.acrud.CreateLikeEntry(this.count, this.likeStatus, this.post_userid, this.unauthpost.title, this.unauthpost.desc)
+      this.acrud.CreateLikeEntry(this.count, this.likeStatus, this.post_userid, this.posttitle, this.postdesc)
 
     }
   }
@@ -352,12 +513,12 @@ this.acrud.getPrivateFromProfileId(postuserid)
 
 
   navigateToProfile(uname: string) {
-    console.log(uname)
+
     if (uname) {
       this.router.navigate(['myprofile', uname])
     }
     else {
-    
+
       this.router.navigate(["/home"])
     }
 
@@ -372,39 +533,50 @@ this.acrud.getPrivateFromProfileId(postuserid)
 
 
   onSubmit(value: Comment) {
-    if(this.isAuthenticated){
-
-    
-    console.log(value)
-    console.log(this.isAuthenticated)
     if (this.isAuthenticated) {
-
-      this.acrud.CreateComment(value, this.currentUserId, this.post_userid, this.unauthpost.title, this.unauthpost.desc)
-        .then(() => {
-          this.CommentForm.reset()
-
-          setTimeout(() => {
-            window.location.reload()
-          }, 900)
-
-        })
-    }
+        this.acrud.CreateComment(value, this.currentUserId, this.post_userid, this.posttitle, this.postdesc)
+          .then(() => {
+            this.CommentForm.reset()
+            setTimeout(() => {
+              window.location.reload()
+            }, 900)
+          })
+      }  
     else {
-      this.router.navigate(["/home"])
+      alert("Please Login or create your account to do Comment")
     }
   }
-  else{
-    alert("Please Login or create your account to do Comment")
-  }
-  }
 
-  onImageLoad(evt){
-  /*   if (evt && evt.target) {
-      this.isImgLoaded=false
-    } */
+  OnDelete() {
+
+    if (this.xyz[2] == "allpost") {
+      this.acrud.passParams(this.xyz[2], this.id)
+      this.acrud.deletPostEvent(this.allPost[this.id], this.id)
+        .then(d => {
+          this.acrud.showSuccessDelete()
+        })
+
+    }
+    if (this.xyz[2] == "public") {
+      this.acrud.passParams(this.xyz[2], this.id)
+      this.acrud.deletPostEvent(this.public_post[this.id], this.id).then(d => {
+        this.acrud.showSuccessDelete()
+      })
+
+    }
+    if (this.xyz[2] == "private") {
+
+      this.acrud.passParams(this.xyz[2], this.id)
+      this.acrud.deletPostEvent(this.private_post[this.id], this.id)
+        .then(d => {
+          this.acrud.showSuccessDelete()
+        })
+
+    }
+
   }
   ngOnDestroy() {
-
+    this.userSub.unsubscribe();
     if (this.prSub && this.private_post) {
       this.prSub.unsubscribe()
     }
@@ -412,5 +584,8 @@ this.acrud.getPrivateFromProfileId(postuserid)
     if (this.puSub && this.public_post) {
       this.puSub.unsubscribe()
     }
+
   }
+
+
 }

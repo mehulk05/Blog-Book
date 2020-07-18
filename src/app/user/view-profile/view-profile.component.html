@@ -35,24 +35,24 @@
         <div class="row" *ngIf="ProfileData">
             <div class="col-md-8 col-xs-8">
                 <h2>
-                    {{ProfileData.name}}
+                    Name : {{ProfileData.name}}
                 </h2>
 
                 <h5>
-                    {{ProfileData.uname}}
+                    <b>Username : </b> {{ProfileData.uname}}
                 </h5>
 
                 <p>
-                    {{ProfileData.email}}
+                    <b>Email : </b> {{ProfileData.email}}
                 </p>
 
                 <p>
-                    {{ProfileData.desc}}
+                    <b>Bio : </b> {{ProfileData.desc}}
                 </p>
             </div>
 
             <div class="col-md-4 col-xs-4">
-                <img [src]="ProfileData.imgurl" class="img-circle" width="150" height="150">
+                <img [src]="ProfileData.imgurl" class="img-circle" alt="" width="150" height="150">
 
             </div>
         </div>
@@ -68,8 +68,7 @@
     <ng-template #loading>
 
         <div *ngIf="isloading" class="loading-text">
-            <div class="loader"></div>
-            <p>Loading content here...</p>
+            <app-loading-spinner></app-loading-spinner>
         </div>
 
     </ng-template>

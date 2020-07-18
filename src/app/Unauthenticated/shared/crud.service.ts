@@ -42,7 +42,7 @@ export class CrudService {
 
   getdata(data) {
     this.selectedFile = data
-    console.log(this.selectedFile)
+
   }
 
 
@@ -51,9 +51,9 @@ export class CrudService {
 
   }
 
-  sendUidandUname(uname,id){
-    this.uid=id
-    this.uname=uname
+  sendUidandUname(uname, id) {
+    this.uid = id
+    this.uname = uname
   }
   createUser(value: UPost) {
     return this.afs.collection(`normal-users`).add({
@@ -65,8 +65,8 @@ export class CrudService {
       name: value.name,
       created_date: this.currentDate,
       imgurl: this.downloadURL,
-      uid:this.uid,
-      uname:this.uname
+      uid: this.uid,
+      uname: this.uname
     })
 
   }
@@ -75,10 +75,10 @@ export class CrudService {
   uploadFile() {
     const myTest = this.afs.collection('test').ref.doc();
     const file = this.selectedFile;
-    console.log(file.name)
-  
-      this.filepath = "UauthUsers"
-    
+
+
+    this.filepath = "UauthUsers"
+
     const filePath = `${this.filepath}/${file.name}`;
     const fileRef = this.afStorage.ref(filePath);
     const task = this.afStorage.upload(filePath, file);

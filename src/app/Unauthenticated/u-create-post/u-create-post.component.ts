@@ -17,9 +17,10 @@ export class UCreatePostComponent implements OnInit {
   isAuthenticated = false;
   private userSub: Subscription;
 
-
+  isloading: boolean
+  isimgloading: boolean
   exampleForm: FormGroup;
-  values = ['Happy', 'Sad', 'Success', 'Failure', 'Hurt', 'Other'];
+  values = ['Happy', 'Sad', 'Success', 'Failure', 'Hurt', 'Study', 'Educational', 'Portfolio', 'Other'];
   selected = 'Happy'
   imageSrc: string | ArrayBuffer;
   downloadURL: string;
@@ -29,10 +30,11 @@ export class UCreatePostComponent implements OnInit {
   privacy: string
   username: any;
   uid: any;
+  error: any;
   onChange(value) {
 
     this.selected = value;
-    console.log(this.selected);
+
   }
 
   validation_messages = {
@@ -59,6 +61,7 @@ export class UCreatePostComponent implements OnInit {
   ) { }
 
   detectFiles(event) {
+    this.isimgloading = true
     this.selectedFile = event.target.files[0];
     if (this.selectedFile.type.split('/')[0] !== 'image') {
       return alert('Pleas select an Image file');
@@ -76,8 +79,12 @@ export class UCreatePostComponent implements OnInit {
     this.firebaseService.downloadurlchange.subscribe((data: string) => {
       this.downloadURL = data
 
+      this.isimgloading = false
     },
-      err => { console.log(err.message) })
+      err => {
+        this.error = err
+        console.log(err.message)
+      })
 
 
   }
@@ -85,35 +92,39 @@ export class UCreatePostComponent implements OnInit {
   ngOnInit(): void {
 
 
-    console.log(this.isloggedin)
     this.userSub = this.authService.user.subscribe(user => {
       this.isAuthenticated = !!user;
 
     })
 
     this.createForm();
-    if(this.isAuthenticated){
+    if (this.isAuthenticated) {
       this.getUidandUname()
     }
-    
+
   }
   getUidandUname() {
+    this.isloading = true
     this.acrud.getProfile().subscribe(d => {
       let x = this.acrud.seprate(d)
-      console.log(x)
-      this.username=x[0].uname
-      this.uid=x[0].id
+      this.isloading = false
+      this.username = x[0].uname
+      this.uid = x[0].id
 
-      this.acrud.sendUidandUname(this.username,this.uid)
-      this.firebaseService.sendUidandUname(this.username,this.uid)
-    })
+
+      this.acrud.sendUidandUname(this.username, this.uid)
+      this.firebaseService.sendUidandUname(this.username, this.uid)
+    },
+      err => {
+        this.error = err
+      })
   }
 
   createForm() {
     this.exampleForm = this.fb.group({
       imgurl: ['', Validators.required],
       title: ['', Validators.required],
-      desc: ['', Validators.required],
+      desc: ['', [Validators.required, Validators.minLength(50)]],
       category: [this.selected, Validators.required],
       subcategory: ['  ', Validators.required],
       name: ['', Validators.required],
@@ -122,6 +133,7 @@ export class UCreatePostComponent implements OnInit {
     });
   }
   onSubmit(value: UPost) {
+
     if (!!this.isAuthenticated) {
 
       if (this.exampleForm.value.privacy == "true") {
@@ -129,7 +141,8 @@ export class UCreatePostComponent implements OnInit {
       }
       this.acrud.createPost(value)
       this.exampleForm.reset();
-      this.router.navigate(['']);
+      this.isloading = true
+
     }
     else {
       this.firebaseService.createUser(value)
@@ -139,12 +152,15 @@ export class UCreatePostComponent implements OnInit {
             this.router.navigate(['']);
           })
         .catch(err => {
+          this.error = err
           console.log("err" + err)
         })
     }
 
   }
-
+  ngOnDestroy() {
+    this.userSub.unsubscribe();
+  }
 }
 
 
