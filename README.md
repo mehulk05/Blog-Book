@@ -1,27 +1,33 @@
 # BlogBook
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.0.4.
+ [Live Demo](https://mehulk05.github.io/Blog-Book).
 
-## Development server
+## What Are Various Features
+- CRUD Operations
+- Authentication (Email /password and Google login)
+- Verification of mail and Password recovery
+- Like/Unlike the post
+- Comment On posts
+- Public and Private options to mark their blog public and private. If the post is private then the only user can see his post after logging in
+- Can view other users profile and their blog
+- Search Filter
+- Featured Post and Latest Post
+- Rich Text Editor Like Medium(WYSIWYG)
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+# What It Covers
 
-## Code scaffolding
+## This project covers all fundamentals of Angular
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+- Cross Component Communication
+- Components, Template, and DataBinding
+- Form Validation
+- HttpClient
+- Animations
+- Dependency Injection
+- Routing & Navigation
+- Service Workers
+- Pipes
+- CRUD operations
+- Guards etc.
 
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+# Live Demo :https://mehulk05.github.io/Blog-Book
